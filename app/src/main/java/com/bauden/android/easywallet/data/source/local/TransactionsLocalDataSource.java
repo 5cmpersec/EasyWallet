@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
-import com.bauden.android.easywallet.data.source.TransactionDataSource;
+import com.bauden.android.easywallet.data.source.TransactionsDataSource;
 import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 import com.bauden.android.easywallet.data.source.local.TransactionsPersistenceContract.TransactionEntry;
 
@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Concrete implementation of a data source as a db.
  */
-public class TransactionsLocalDataSource implements TransactionDataSource {
+public class TransactionsLocalDataSource implements TransactionsDataSource {
 
     private static TransactionsLocalDataSource sINSTANCE;
 

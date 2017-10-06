@@ -11,7 +11,7 @@ import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 
 import java.util.List;
 
-public interface TransactionDataSource {
+public interface TransactionsDataSource {
 
 
     interface LoadTransactionsCallback {
