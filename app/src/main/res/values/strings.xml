@@ -5,4 +5,7 @@
     <string name="type">Type</string>
     <string name="payment">Expense</string>
     <string name="date">Date</string>
+
+    <string name="statistics_title">Statistics</string>
+    <string name="navigation_view_header_title">EasyWallet</string>
 </resources>
