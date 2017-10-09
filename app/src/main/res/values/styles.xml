@@ -8,4 +8,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Floating Label text -->
+    <style name="TextLabelDark" parent="AppTheme">
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlActivated">@android:color/white</item>
+    </style>
+
+    <!-- Expense switch -->
+    <style name="ExpenseSwitchTheme">
+        <item name="colorControlActivated">@color/budget_green</item>
+        <item name="colorSwitchThumbNormal">@color/budget_red</item>
+    </style>
+
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 </resources>
