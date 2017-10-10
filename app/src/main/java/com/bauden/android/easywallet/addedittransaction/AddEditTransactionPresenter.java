@@ -8,9 +8,11 @@ package com.bauden.android.easywallet.addedittransaction;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.bauden.android.easywallet.UseCase;
 import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.addedittransaction.domain.usecase.GetTransaction;
 import com.bauden.android.easywallet.addedittransaction.domain.usecase.SaveTransaction;
+import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 
 import java.util.Date;
 
@@ -45,7 +47,9 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
     @Override
     public void saveTransaction(String title, Date date, double amount) {
-
+        if (isNewTransaction()) {
+            createTransaction(title, date, amount);
+        }
     }
 
     @Override
@@ -56,5 +60,25 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
     @Override
     public void start() {
 
+    }
+
+    private boolean isNewTransaction() {
+        return mTransactionId == null;
+    }
+
+    private void createTransaction(String title, Date date, double amount) {
+        Transaction transaction = new Transaction(title, date, amount);
+        mUseCaseHandler.execute(mSaveTransaction, new SaveTransaction.RequestValues(transaction),
+                new UseCase.UseCaseCallback<SaveTransaction.ResponseValue>() {
+                    @Override
+                    public void onSuccess(SaveTransaction.ResponseValue response) {
+                        mAddEditTransactionView.showTransactionsList();
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
     }
 }

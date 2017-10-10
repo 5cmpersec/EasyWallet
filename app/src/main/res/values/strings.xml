@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">EasyWallet</string>
 
+    <string name="amount">Amount ( %s )</string>
     <string name="description">Description</string>
     <string name="type">Type</string>
     <string name="payment">Expense</string>

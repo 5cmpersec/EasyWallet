@@ -30,6 +30,8 @@ public interface TransactionsContract {
 
         void showTransactions(List<Transaction> transactions);
 
+        void showLoadingTransactionsError();
+
         boolean isActive();
     }
 }

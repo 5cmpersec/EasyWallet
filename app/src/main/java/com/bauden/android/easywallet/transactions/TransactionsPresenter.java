@@ -10,6 +10,10 @@ import android.support.annotation.NonNull;
 
 import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
+import com.bauden.android.easywallet.transactions.domain.model.Transaction;
+import com.bauden.android.easywallet.transactions.domain.usecase.GetTransactions;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,18 +23,22 @@ public class TransactionsPresenter implements TransactionsContract.Presenter {
 
     private final TransactionsContract.View mTransactionsView;
 
+    private final GetTransactions mGetTransactions;
+
     public TransactionsPresenter(@NonNull UseCaseHandler useCaseHandler,
-                                 @NonNull TransactionsContract.View transactionsView) {
+                                 @NonNull TransactionsContract.View transactionsView,
+                                 @NonNull GetTransactions getTransactions) {
 
         mUseCaseHandler = checkNotNull(useCaseHandler);
         mTransactionsView = checkNotNull(transactionsView);
+        mGetTransactions = checkNotNull(getTransactions);
 
         mTransactionsView.setPresenter(this);
     }
 
     @Override
     public void start() {
-
+        loadTransactions();
     }
 
     @Override
@@ -40,7 +48,24 @@ public class TransactionsPresenter implements TransactionsContract.Presenter {
 
     @Override
     public void loadTransactions() {
+        mUseCaseHandler.execute(mGetTransactions, new GetTransactions.RequestValues(),
+                new GetTransactions.UseCaseCallback<GetTransactions.ResponseValue>() {
+                    @Override
+                    public void onSuccess(GetTransactions.ResponseValue response) {
+                        if (!mTransactionsView.isActive()) {
+                            return;
+                        }
+                        mTransactionsView.showTransactions(response.getTransactions());
+                    }
 
+                    @Override
+                    public void onError() {
+                        if (!mTransactionsView.isActive()) {
+                            return;
+                        }
+                        mTransactionsView.showLoadingTransactionsError();
+                    }
+                });
     }
 
     @Override

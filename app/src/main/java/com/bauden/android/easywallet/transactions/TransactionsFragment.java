@@ -80,6 +80,12 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
     public void setPresenter(@NonNull TransactionsContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
     }
@@ -98,6 +104,11 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     @Override
     public void showTransactions(List<Transaction> transactions) {
         mListAdapter.replaceData(transactions);
+    }
+
+    @Override
+    public void showLoadingTransactionsError() {
+        showMessage("Loading Transactions Error.");
     }
 
     @Override

@@ -35,7 +35,7 @@ public class TransactionsRepository implements TransactionsDataSource {
     boolean mCacheIsDirty = false;
 
     private TransactionsRepository(@NonNull TransactionsDataSource localSource) {
-        this.mTransactionsLocalDataSource = checkNotNull(localSource);
+        mTransactionsLocalDataSource = checkNotNull(localSource);
     }
 
     public static TransactionsRepository getInstance(TransactionsDataSource transactionsLocalDataSource) {

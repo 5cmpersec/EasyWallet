@@ -5,6 +5,7 @@
 
 package com.bauden.android.easywallet.addedittransaction;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,14 +63,21 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
         super.onActivityCreated(savedInstanceState);
 
         FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_task_done);
+                (FloatingActionButton) getActivity().findViewById(R.id.fab_edit_transaction_done);
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "FloatActionButton", Snackbar.LENGTH_LONG).show();
+                mPresenter.saveTransaction(mTitle.getText().toString(),
+                        new Date(), Double.parseDouble(mAmount.getText().toString()));
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
@@ -79,7 +87,8 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
     @Override
     public void showTransactionsList() {
-
+        getActivity().setResult(Activity.RESULT_OK);
+        getActivity().finish();
     }
 
     @Override
