@@ -5,9 +5,12 @@
 
 package com.bauden.android.easywallet.transactions;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bauden.android.easywallet.R;
+import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
 import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 
 import java.util.ArrayList;
@@ -47,6 +51,15 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
         ListView listView = (ListView) root.findViewById(R.id.transactions_list);
         listView.setAdapter(mListAdapter);
 
+        FloatingActionButton fab =
+                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.addNewTransaction();
+            }
+        });
+
         return root;
     }
 
@@ -62,8 +75,24 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPresenter.result(requestCode, resultCode);
+    }
+
+    @Override
     public void setPresenter(@NonNull TransactionsContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
+    }
+
+    @Override
+    public void showAddNewTransaction() {
+        Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
+        startActivityForResult(intent, AddEditTransactionActivity.REQUEST_ADD_NEW_TRANSACTION);
+    }
+
+    @Override
+    public void showSuccessfullyAddedTransaction() {
+        showMessage("New transaction saved.");
     }
 
     @Override
@@ -74,6 +103,10 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     @Override
     public boolean isActive() {
         return isAdded();
+    }
+
+    private void showMessage(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
     }
 
     private static class TransactionsListAdapter extends BaseAdapter {
@@ -126,4 +159,5 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
             return rowView;
         }
     }
+
 }

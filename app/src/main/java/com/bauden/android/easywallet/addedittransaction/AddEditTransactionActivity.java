@@ -14,6 +14,8 @@ import com.bauden.android.easywallet.util.ActivityUtils;
 
 public class AddEditTransactionActivity extends AppCompatActivity {
 
+    public static final int REQUEST_ADD_NEW_TRANSACTION = 1;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

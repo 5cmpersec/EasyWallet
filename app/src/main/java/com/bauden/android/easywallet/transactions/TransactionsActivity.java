@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.bauden.android.easywallet.R;
+import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.util.ActivityUtils;
 
 public class TransactionsActivity extends AppCompatActivity {
@@ -44,5 +45,9 @@ public class TransactionsActivity extends AppCompatActivity {
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), transactionsFragment,
                     R.id.contentFrame);
         }
+
+        // Create the presenter
+        mTransactionsPresenter = new TransactionsPresenter(UseCaseHandler.getInstance(),
+                transactionsFragment);
     }
 }

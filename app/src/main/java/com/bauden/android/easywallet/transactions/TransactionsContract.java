@@ -15,10 +15,18 @@ public interface TransactionsContract {
 
     interface Presenter extends BasePresenter {
 
+        void addNewTransaction();
+
         void loadTransactions();
+
+        void result(int requestCode, int resultCode);
     }
 
     interface View extends BaseView<Presenter> {
+
+        void showAddNewTransaction();
+
+        void showSuccessfullyAddedTransaction();
 
         void showTransactions(List<Transaction> transactions);
 
