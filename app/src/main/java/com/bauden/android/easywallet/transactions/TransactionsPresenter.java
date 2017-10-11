@@ -10,10 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
-import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 import com.bauden.android.easywallet.transactions.domain.usecase.GetTransactions;
-
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

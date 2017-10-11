@@ -31,5 +31,8 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.google.guava:guava:$rootProject.ext.guavaVersion"
 
+    compile "com.applandeo:material-calendar-view:$rootProject.ext.materialCalendarViewVersion"
+    compile 'com.roomorama:caldroid:3.0.1'
+
     testCompile "junit:junit:$rootProject.ext.junitVersion"
 }

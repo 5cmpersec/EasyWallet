@@ -34,4 +34,6 @@ ext {
     supportLibraryVersion = '26.+'
     espressoVersion = '2.2.2'
     guavaVersion = '18.0'
+
+    materialCalendarViewVersion = '1.1.0'
 }

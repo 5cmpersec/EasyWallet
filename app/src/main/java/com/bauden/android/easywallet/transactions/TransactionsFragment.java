@@ -16,15 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.applandeo.materialcalendarview.CalendarView;
 import com.bauden.android.easywallet.R;
 import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
 import com.bauden.android.easywallet.transactions.domain.model.Transaction;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,6 +43,13 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
         return new TransactionsFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mListAdapter = new TransactionsListAdapter(new ArrayList<Transaction>(0));
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -51,6 +59,13 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
         ListView listView = (ListView) root.findViewById(R.id.transactions_list);
         listView.setAdapter(mListAdapter);
 
+        return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         FloatingActionButton fab =
                 (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,19 +74,6 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
                 mPresenter.addNewTransaction();
             }
         });
-
-        return root;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        List<Transaction> tmp = new ArrayList<>(3);
-        tmp.add(0, new Transaction("Eat Lunch", new Date(), 60000));
-        tmp.add(0, new Transaction("Party", new Date(), 1000000));
-        tmp.add(0, new Transaction("Eat Dinner", new Date(), 25000));
-        mListAdapter = new TransactionsListAdapter(tmp);
     }
 
     @Override

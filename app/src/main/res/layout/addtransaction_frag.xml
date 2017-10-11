@@ -92,19 +92,19 @@
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.SwitchCompat
-                        android:id="@+id/expense_type_switch"
+                        android:id="@+id/transaction_type_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
                         android:checked="false"
                         android:theme="@style/ExpenseSwitchTheme"/>
 
-                    <TextView android:id="@+id/expense_type_tv"
+                    <TextView android:id="@+id/transaction_type_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="@color/budget_red"
-                        android:text="@string/payment" />
+                        android:text="@string/expense" />
 
                 </LinearLayout>
 
@@ -130,7 +130,9 @@
                     android:layout_height="30dp"
                     android:textColor="@color/primary_text"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:paddingBottom="0dp"/>
+                    android:paddingBottom="0dp"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:background="@drawable/edittext"/>
 
             </LinearLayout>
 
