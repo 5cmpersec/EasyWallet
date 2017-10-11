@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="Title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/transaction_amount"
@@ -37,6 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="amount"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
 </RelativeLayout>
