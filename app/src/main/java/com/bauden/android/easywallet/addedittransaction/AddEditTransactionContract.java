@@ -21,6 +21,12 @@ public interface AddEditTransactionContract {
         void setDate(Date date);
 
         void setAmount(double amount);
+
+        void setTransactionIsIncome(boolean isIncome);
+
+        void showTransactionError();
+
+        boolean isActive();
     }
 
     interface Presenter extends BasePresenter {

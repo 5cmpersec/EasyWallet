@@ -49,17 +49,36 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
     public void saveTransaction(String title, Date date, double amount) {
         if (isNewTransaction()) {
             createTransaction(title, date, amount);
+        } else {
+            updateTransaction(title, date, amount);
         }
     }
 
     @Override
     public void populateTransactions() {
+        if (mTransactionId == null) {
+            throw new RuntimeException("transaction is new!");
+        }
 
+        mUseCaseHandler.execute(mGetTransaction, new GetTransaction.RequestValues(mTransactionId),
+                new UseCase.UseCaseCallback<GetTransaction.ResponseValue>() {
+                    @Override
+                    public void onSuccess(GetTransaction.ResponseValue response) {
+                        showTransaction(response.getTransaction());
+                    }
+
+                    @Override
+                    public void onError() {
+                        showTransactionError();
+                    }
+                });
     }
 
     @Override
     public void start() {
-
+        if (!isNewTransaction()) {
+            populateTransactions();
+        }
     }
 
     private boolean isNewTransaction() {
@@ -77,8 +96,42 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
                     @Override
                     public void onError() {
-
+                        showTransactionError();
                     }
                 });
+    }
+
+    private void updateTransaction(String title, Date date, double amount) {
+        if (mTransactionId == null) {
+            throw new RuntimeException("updateTransaction() was called but transaction is new.");
+        }
+        Transaction transaction = new Transaction(mTransactionId, title, date, amount);
+        mUseCaseHandler.execute(mSaveTransaction, new SaveTransaction.RequestValues(transaction),
+                new UseCase.UseCaseCallback<SaveTransaction.ResponseValue>() {
+                    @Override
+                    public void onSuccess(SaveTransaction.ResponseValue response) {
+                        mAddEditTransactionView.showTransactionsList();
+                    }
+
+                    @Override
+                    public void onError() {
+                        showTransactionError();
+                    }
+                });
+    }
+
+    private void showTransaction(Transaction transaction) {
+        if (mAddEditTransactionView.isActive()) {
+            mAddEditTransactionView.setTitle(transaction.getTitle());
+            mAddEditTransactionView.setAmount(transaction.getAmount());
+            mAddEditTransactionView.setDate(transaction.getDate());
+            mAddEditTransactionView.setTransactionIsIncome(transaction.getAmount() > 0.0);
+        }
+    }
+
+    private void showTransactionError() {
+        if (mAddEditTransactionView.isActive()) {
+            mAddEditTransactionView.showTransactionError();
+        }
     }
 }

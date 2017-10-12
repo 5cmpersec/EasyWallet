@@ -12,4 +12,7 @@
     <string name="navigation_view_header_title">EasyWallet</string>
 
     <string name="transaction_date_format">MMM dd yyyy</string>
+
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="new_transaction">New Transaction</string>
 </resources>

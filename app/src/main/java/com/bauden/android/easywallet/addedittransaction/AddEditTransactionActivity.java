@@ -44,15 +44,24 @@ public class AddEditTransactionActivity extends AppCompatActivity {
                 (AddEditTransactionFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
 
+        String transactionId = getIntent().getStringExtra(ARG_EDIT_TRANSACTION_ID);
         if (addEditTransactionFragment == null) {
             addEditTransactionFragment = AddEditTransactionFragment.newInstance();
 
+            if (getIntent().hasExtra(ARG_EDIT_TRANSACTION_ID)) {
+                actionBar.setTitle(R.string.edit_transaction);
+                Bundle bundle = new Bundle();
+                bundle.putString(ARG_EDIT_TRANSACTION_ID, transactionId);
+                addEditTransactionFragment.setArguments(bundle);
+            } else {
+                actionBar.setTitle(R.string.new_transaction);
+            }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     addEditTransactionFragment, R.id.contentFrame);
         }
 
         new AddEditTransactionPresenter(UseCaseHandler.getInstance(),
-                null,
+                transactionId,
                 addEditTransactionFragment,
                 new GetTransaction(TransactionsRepository.getInstance(new TransactionsLocalDataSource(getApplicationContext()))),
                 new SaveTransaction(TransactionsRepository.getInstance(new TransactionsLocalDataSource(getApplicationContext()))));

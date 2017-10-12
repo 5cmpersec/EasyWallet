@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
@@ -24,6 +25,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bauden.android.easywallet.R;
+import com.google.common.base.Strings;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,8 +35,6 @@ import java.util.Locale;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class AddEditTransactionFragment extends Fragment implements AddEditTransactionContract.View {
-
-    public static final String ARGUMENT_EDIT_TRANSACTION_ID = "EDIT_TRANSACTION_ID";
 
     private AddEditTransactionContract.Presenter mPresenter;
 
@@ -47,6 +47,8 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
     private Button mBtnDate;
 
     private Date mCurrentDate;
+
+    private SwitchCompat mSwitch;
 
     private boolean mIsIncome;
 
@@ -82,8 +84,8 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
             }
         });
 
-        SwitchCompat switchCompat = (SwitchCompat) root.findViewById(R.id.transaction_type_switch);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitch = (SwitchCompat) root.findViewById(R.id.transaction_type_switch);
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
                 mIsIncome = isChecked;
@@ -91,9 +93,6 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
             }
         });
 
-        if (mIsIncome) {
-            switchCompat.setChecked(true);
-        }
         updateViewForTransaction(mIsIncome);
 
         return root;
@@ -109,8 +108,7 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
             @Override
             public void onClick(View view) {
-                mPresenter.saveTransaction(mTitle.getText().toString(),
-                        mCurrentDate, Double.parseDouble(mAmount.getText().toString()));
+                trySaveTransaction();
             }
         });
         fab.setImageResource(R.drawable.ic_done_24dp);
@@ -135,17 +133,34 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
     @Override
     public void setTitle(String title) {
-
+        mTitle.setText(title);
     }
 
     @Override
     public void setDate(Date date) {
-
+        mCurrentDate = date;
+        mBtnDate.setText(formatDate(date));
     }
 
     @Override
     public void setAmount(double amount) {
+        mAmount.setText(String.format(Locale.getDefault(), "%.2f", Math.abs(amount)));
+    }
 
+    @Override
+    public void setTransactionIsIncome(boolean isIncome) {
+        mIsIncome = isIncome;
+        updateViewForTransaction(isIncome);
+    }
+
+    @Override
+    public void showTransactionError() {
+        showMessage("Transaction Error");
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded();
     }
 
     private void showDatePickerDialog(final Date date) {
@@ -178,6 +193,9 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
     private void updateViewForTransaction(boolean isIncome) {
         if (isIncome) {
+            mSwitch.setChecked(true);
+        }
+        if (isIncome) {
             mTransactionType.setText(getResources().getString(R.string.income));
             mTransactionType.setTextColor(ContextCompat.getColor(getActivity(), R.color.budget_green));
         } else {
@@ -185,4 +203,29 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
             mTransactionType.setTextColor(ContextCompat.getColor(getActivity(), R.color.budget_red));
         }
     }
+
+    private void showMessage(String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+    }
+
+    private void trySaveTransaction() {
+        if (Strings.isNullOrEmpty(mTitle.getText().toString().trim()) ||
+                Strings.isNullOrEmpty(mAmount.getText().toString().trim())) {
+            showMessage("Empty Input is not allowed");
+        } else {
+
+            try {
+                Double amount = Double.parseDouble(mAmount.getText().toString());
+                if (!mIsIncome) {
+                    amount = amount * (-1);
+                }
+                mPresenter.saveTransaction(mTitle.getText().toString().trim(),
+                        mCurrentDate, amount);
+            } catch (NumberFormatException e) {
+                showMessage("Can not parse amount");
+            }
+
+        }
+    }
+
 }
