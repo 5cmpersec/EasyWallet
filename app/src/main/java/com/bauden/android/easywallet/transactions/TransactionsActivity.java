@@ -16,6 +16,7 @@ import com.bauden.android.easywallet.R;
 import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.data.source.TransactionsRepository;
 import com.bauden.android.easywallet.data.source.local.TransactionsLocalDataSource;
+import com.bauden.android.easywallet.transactions.domain.usecase.DeleteTransaction;
 import com.bauden.android.easywallet.transactions.domain.usecase.GetTransactions;
 import com.bauden.android.easywallet.util.ActivityUtils;
 
@@ -52,6 +53,7 @@ public class TransactionsActivity extends AppCompatActivity {
         // Create the presenter
         mTransactionsPresenter = new TransactionsPresenter(UseCaseHandler.getInstance(),
                 transactionsFragment,
-                new GetTransactions(TransactionsRepository.getInstance(new TransactionsLocalDataSource(getApplicationContext()))));
+                new GetTransactions(TransactionsRepository.getInstance(new TransactionsLocalDataSource(getApplicationContext()))),
+                new DeleteTransaction(TransactionsRepository.getInstance(new TransactionsLocalDataSource(getApplicationContext()))));
     }
 }

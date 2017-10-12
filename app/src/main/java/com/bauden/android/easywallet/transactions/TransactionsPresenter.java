@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import com.bauden.android.easywallet.UseCaseHandler;
 import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
+import com.bauden.android.easywallet.transactions.domain.usecase.DeleteTransaction;
 import com.bauden.android.easywallet.transactions.domain.usecase.GetTransactions;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -22,13 +23,17 @@ public class TransactionsPresenter implements TransactionsContract.Presenter {
 
     private final GetTransactions mGetTransactions;
 
+    private final DeleteTransaction mDeleteTransaction;
+
     public TransactionsPresenter(@NonNull UseCaseHandler useCaseHandler,
                                  @NonNull TransactionsContract.View transactionsView,
-                                 @NonNull GetTransactions getTransactions) {
+                                 @NonNull GetTransactions getTransactions,
+                                 @NonNull DeleteTransaction deleteTransaction) {
 
         mUseCaseHandler = checkNotNull(useCaseHandler);
         mTransactionsView = checkNotNull(transactionsView);
         mGetTransactions = checkNotNull(getTransactions);
+        mDeleteTransaction = checkNotNull(deleteTransaction);
 
         mTransactionsView.setPresenter(this);
     }
@@ -61,6 +66,24 @@ public class TransactionsPresenter implements TransactionsContract.Presenter {
                             return;
                         }
                         mTransactionsView.showLoadingTransactionsError();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteTransaction(@NonNull String transactionId) {
+        mUseCaseHandler.execute(mDeleteTransaction, new DeleteTransaction.RequestValues(transactionId),
+                new DeleteTransaction.UseCaseCallback<DeleteTransaction.ResponseValue>() {
+
+                    @Override
+                    public void onSuccess(DeleteTransaction.ResponseValue response) {
+                        mTransactionsView.showSuccessfullyDeletedTransaction();
+                        loadTransactions();
+                    }
+
+                    @Override
+                    public void onError() {
+                        mTransactionsView.showDeletingTransactionError();
                     }
                 });
     }

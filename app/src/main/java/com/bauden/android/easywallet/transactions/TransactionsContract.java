@@ -19,6 +19,8 @@ public interface TransactionsContract {
 
         void loadTransactions();
 
+        void deleteTransaction(String transactionId);
+
         void result(int requestCode, int resultCode);
     }
 
@@ -28,9 +30,15 @@ public interface TransactionsContract {
 
         void showSuccessfullyAddedTransaction();
 
+        void showEditTransaction(String transactionId);
+
         void showTransactions(List<Transaction> transactions);
 
         void showLoadingTransactionsError();
+
+        void showSuccessfullyDeletedTransaction();
+
+        void showDeletingTransactionError();
 
         boolean isActive();
     }

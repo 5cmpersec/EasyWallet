@@ -3,7 +3,7 @@
  *
  */
 
-package com.bauden.android.easywallet.addedittransaction.domain.usecase;
+package com.bauden.android.easywallet.transactions.domain.usecase;
 
 import android.support.annotation.NonNull;
 

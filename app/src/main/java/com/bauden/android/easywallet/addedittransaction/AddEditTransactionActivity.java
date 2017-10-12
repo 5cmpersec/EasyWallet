@@ -23,6 +23,10 @@ public class AddEditTransactionActivity extends AppCompatActivity {
 
     public static final int REQUEST_ADD_NEW_TRANSACTION = 1;
 
+    public static final int REQUEST_EDIT_TRANSACTION = 2;
+
+    public static final String ARG_EDIT_TRANSACTION_ID = "EDIT_TRANSACTION_ID";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

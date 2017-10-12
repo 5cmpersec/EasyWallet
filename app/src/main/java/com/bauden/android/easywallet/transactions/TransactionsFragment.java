@@ -5,6 +5,7 @@
 
 package com.bauden.android.easywallet.transactions;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.applandeo.materialcalendarview.CalendarView;
 import com.bauden.android.easywallet.R;
 import com.bauden.android.easywallet.addedittransaction.AddEditTransactionActivity;
 import com.bauden.android.easywallet.transactions.domain.model.Transaction;
@@ -36,6 +37,8 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
 
     private TransactionsListAdapter mListAdapter;
 
+    private TransactionItemListener mTransactionItemListener;
+
     public TransactionsFragment() {
     }
 
@@ -47,7 +50,29 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mListAdapter = new TransactionsListAdapter(new ArrayList<Transaction>(0));
+        mTransactionItemListener = new TransactionItemListener() {
+            @Override
+            public void onTransactionClick(final Transaction clickedTransaction) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setItems(R.array.transaction_actions, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0:
+                                showEditTransaction(clickedTransaction.getId());
+                                break;
+                            case 1:
+                                mPresenter.deleteTransaction(clickedTransaction.getId());
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }).show();
+            }
+        };
+
+        mListAdapter = new TransactionsListAdapter(new ArrayList<Transaction>(0), mTransactionItemListener);
     }
 
     @Nullable
@@ -104,6 +129,14 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     }
 
     @Override
+    public void showEditTransaction(@NonNull String transactionId) {
+        checkNotNull(transactionId);
+        Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
+        intent.putExtra(AddEditTransactionActivity.ARG_EDIT_TRANSACTION_ID, transactionId);
+        startActivityForResult(intent, AddEditTransactionActivity.REQUEST_EDIT_TRANSACTION);
+    }
+
+    @Override
     public void showTransactions(List<Transaction> transactions) {
         mListAdapter.replaceData(transactions);
     }
@@ -111,6 +144,16 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
     @Override
     public void showLoadingTransactionsError() {
         showMessage("Loading Transactions Error.");
+    }
+
+    @Override
+    public void showSuccessfullyDeletedTransaction() {
+        showMessage("Transaction deleted.");
+    }
+
+    @Override
+    public void showDeletingTransactionError() {
+        showMessage("Deleting Transactions Error.");
     }
 
     @Override
@@ -126,8 +169,12 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
 
         private List<Transaction> mTransactions;
 
-        public TransactionsListAdapter(List<Transaction> transactions) {
+        private TransactionItemListener mListener;
+
+        public TransactionsListAdapter(List<Transaction> transactions,
+                                       TransactionItemListener listener) {
             setList(transactions);
+            mListener = listener;
         }
 
         public void replaceData(List<Transaction> transactions) {
@@ -169,8 +216,21 @@ public class TransactionsFragment extends Fragment implements TransactionsContra
             TextView amount = (TextView) rowView.findViewById(R.id.transaction_amount);
             amount.setText(transaction.getAmount() + " - "+ transaction.getDate().toString());
 
+            rowView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onTransactionClick(transaction);
+                }
+            });
+
             return rowView;
         }
+    }
+
+    public interface TransactionItemListener {
+
+        void onTransactionClick(Transaction clickedTransaction);
+
     }
 
 }
