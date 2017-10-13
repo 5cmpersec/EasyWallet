@@ -176,7 +176,9 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
         };
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener,
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                R.style.DatePickerTheme,
+                listener,
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
