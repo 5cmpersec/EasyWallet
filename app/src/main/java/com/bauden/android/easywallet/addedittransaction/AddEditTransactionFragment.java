@@ -25,7 +25,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bauden.android.easywallet.R;
+import com.bauden.android.easywallet.transactions.TransactionsContract;
 import com.google.common.base.Strings;
+import com.kyleduo.switchbutton.SwitchButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,7 +50,7 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
     private Date mCurrentDate;
 
-    private SwitchCompat mSwitch;
+    private SwitchButton mSwitch;
 
     private boolean mIsIncome;
 
@@ -71,7 +73,7 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
 
         mTitle = (EditText) root.findViewById(R.id.description_edittext);
         mAmount = (EditText) root.findViewById(R.id.amount_edittext);
-        mTransactionType = (TextView) root.findViewById(R.id.transaction_type_tv);
+        mIsIncome = false;
 
         mCurrentDate = new Date();
         mBtnDate = (Button) root.findViewById(R.id.date_button);
@@ -84,16 +86,13 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
             }
         });
 
-        mSwitch = (SwitchCompat) root.findViewById(R.id.transaction_type_switch);
+        mSwitch = (SwitchButton) root.findViewById(R.id.transaction_type_switch);
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton btn, boolean isChecked) {
                 mIsIncome = isChecked;
-                updateViewForTransaction(mIsIncome);
             }
         });
-
-        updateViewForTransaction(mIsIncome);
 
         return root;
     }
@@ -150,7 +149,7 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
     @Override
     public void setTransactionIsIncome(boolean isIncome) {
         mIsIncome = isIncome;
-        updateViewForTransaction(isIncome);
+        mSwitch.setChecked(mIsIncome);
     }
 
     @Override
@@ -189,19 +188,6 @@ public class AddEditTransactionFragment extends Fragment implements AddEditTrans
                 new SimpleDateFormat(getResources().getString(R.string.transaction_date_format),
                 Locale.getDefault());
         return formatter.format(date);
-    }
-
-    private void updateViewForTransaction(boolean isIncome) {
-        if (isIncome) {
-            mSwitch.setChecked(true);
-        }
-        if (isIncome) {
-            mTransactionType.setText(getResources().getString(R.string.income));
-            mTransactionType.setTextColor(ContextCompat.getColor(getActivity(), R.color.budget_green));
-        } else {
-            mTransactionType.setText(getResources().getString(R.string.expense));
-            mTransactionType.setTextColor(ContextCompat.getColor(getActivity(), R.color.budget_red));
-        }
     }
 
     private void showMessage(String message) {

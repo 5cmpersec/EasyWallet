@@ -91,20 +91,17 @@
                     android:paddingTop="4dp"
                     android:orientation="horizontal">
 
-                    <android.support.v7.widget.SwitchCompat
+                    <com.kyleduo.switchbutton.SwitchButton
                         android:id="@+id/transaction_type_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
                         android:checked="false"
-                        android:theme="@style/ExpenseSwitchTheme"/>
-
-                    <TextView android:id="@+id/transaction_type_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="@color/budget_red"
-                        android:text="@string/expense" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        app:kswTextOn="@string/income"
+                        app:kswTextOff="@string/expense"
+                        app:kswThumbColor="@drawable/switch_thumb_color"
+                        app:kswBackColor="@drawable/switch_back_color"
+                        />
 
                 </LinearLayout>
 

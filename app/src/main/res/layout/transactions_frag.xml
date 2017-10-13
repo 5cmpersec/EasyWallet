@@ -30,7 +30,7 @@
         android:id="@+id/budgetLineContainer"
         android:layout_width="match_parent"
         android:layout_height="28dp"
-        android:background="@color/budget_green"
+        android:background="@color/green"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/activity_horizontal_margin"

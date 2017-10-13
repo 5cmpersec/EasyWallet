@@ -9,8 +9,10 @@
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
     <color name="accent">@color/primary</color>
-    <color name="divider">#eeeeee</color>
+    <color name="divider">#EEEEEE</color>
 
-    <color name="budget_green">#4CAF50</color>
-    <color name="budget_red">#F44336</color>
+    <color name="green">#4CAF50</color>
+    <color name="lightGreen">#90EE90</color>
+    <color name="red">#F44336</color>
+    <color name="lightPink">#FFB6C1</color>
 </resources>

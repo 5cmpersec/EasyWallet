@@ -29,8 +29,8 @@
 
     <!-- Expense switch -->
     <style name="ExpenseSwitchTheme">
-        <item name="colorControlActivated">@color/budget_green</item>
-        <item name="colorSwitchThumbNormal">@color/budget_red</item>
+        <item name="colorControlActivated">@color/green</item>
+        <item name="colorSwitchThumbNormal">@color/red</item>
     </style>
 
 </resources>
