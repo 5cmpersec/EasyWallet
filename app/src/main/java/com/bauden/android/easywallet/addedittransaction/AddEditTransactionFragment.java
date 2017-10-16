@@ -13,8 +13,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +23,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bauden.android.easywallet.R;
-import com.bauden.android.easywallet.transactions.TransactionsContract;
 import com.google.common.base.Strings;
 import com.kyleduo.switchbutton.SwitchButton;
 
